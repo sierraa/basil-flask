@@ -1,2 +1,2 @@
 # basil-flask
-Flask app for saving recipes.
+Basil is a flask app for saving recipes and meal planning.

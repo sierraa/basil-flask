@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}New Recipe{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <label for="title">Title</label>
+    <input name="title" id="title" required>
+    <label for="ingredient1">Main Ingredient 1</label>
+    <input name="ingredient1" id="ingredient1" required>
+    <label for="ingredient2">Main Ingredient 2</label>
+    <input name="ingredient2" id="ingredient2" required>
+    <label for="cuisine">Cuisine</label>
+    <select name="cuisine" id="cuisine">
+        {% for cuisine in cuisines %}
+        <option value="{{cuisine}}" SELECTED>{{cuisine}}</option>
+        {% endfor %}
+    </select>
+    <label for="URL">URL</label>
+    <input name="url" id="url" required>
+    <label for="source">Source (if different than URL)</label>
+    <input name="source" id="source">
+    <label for="ingredients">List relevant ingredients separated by a comma</label>
+    <textarea name="ingredients" id="ingredients">flour, water, salt, yeast</textarea>
+    <label for="notes">Notes</label>
+    <textarea name="notes" id="notes">List any notes about the recipe</textarea>
+    <div class="checkbox">
+        <label>Diets (check all that apply):</label>
+        {% for diet in diets %}
+        <span>{{diet}}</span>
+        <input type="checkbox" id="{{diet}}" name="{{diet}}" value="{{diet}}">
+        {% endfor %}
+    </div>
+    <label for="tags">Tags</label>
+    <!-- TODO: h8 this, want a slick multiselect blogstyle tag thing -->
+    <select multiple name="tags" id="tags">
+        {% for tag in tags %}
+        <option value="{{tag}}">{{tag}}</option>
+        {% endfor %}
+    </select>
+    <label for="screenshot">Screenshot</label>
+    <input type="file" name="file" id="screenshot" accept="image/png">
+    <input type="submit" value="Add">
+</form>
+{% endblock %}
