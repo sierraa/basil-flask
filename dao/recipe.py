@@ -6,9 +6,6 @@ import json
 
 @dataclass
 class Recipe:
-    """
-    The hope is to be able to parse all this data from the given URL eventually
-    """
     title: str
     url: str
     ingredient_1: str

@@ -1,10 +1,20 @@
 from flask import Flask, render_template, request, flash
+from dotenv import load_dotenv
+import os
+import logging
+
+from main.recipe_service import RecipeService
 
 
 def create_app():
+    load_dotenv()
     app = Flask(__name__, instance_relative_config=True)
-
     app.config.from_mapping(SECRET_KEY="dev")
+
+    logging.basicConfig(level=logging.DEBUG)
+
+    recipe_service = RecipeService(os.getenv("RECIPES_TABLE_NAME"), os.getenv("SCREENSHOTS_BUCKET"),
+                                   os.getenv("ACCESS_KEY"), os.getenv("SECRET_KEY"))
 
     @app.route("/")
     def home():
@@ -13,16 +23,8 @@ def create_app():
     @app.route("/recipe", methods=["POST", "GET"])
     def add_recipe():
         if request.method == "POST":
-            title = request.form["title"]
-            recipe_url = request.form["url"]
-            error = None
-            if not title:
-                error = "Title is required."
-            if error is not None:
-                flash(error)
-            else:
-                # Write to the DB
-                pass
+            print(request.files)
+            recipe_service.add_recipe(request.form, request.files['file'])
         # TODO probably want to get this from a better source of truth
         cuisines = ["Italian", "Japanese", "Mexican", "Thai", "None"]
         diets = ["Vegetarian", "Vegan", "Low carb", "Pescetarian"]
