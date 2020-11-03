@@ -1,7 +1,7 @@
 from dao.recipe import Recipe
 from dao.recipe_dao import RecipeDao
 from dao.screenshot_dao import ScreenshotDao
-
+from werkzeug.utils import secure_filename
 
 class RecipeService:
 
@@ -12,7 +12,8 @@ class RecipeService:
     def add_recipe(self, form, screenshot_file):
         # TODO: add validation in here
         title = form["title"]
-        screenshot_url = self.screenshot_dao.upload(screenshot_file.filename, title)
+        screenshot_file.filename = secure_filename(screenshot_file.filename)
+        screenshot_url = self.screenshot_dao.upload(screenshot_file, title)
         ingredients = self.get_ingredients_list_from_string(form["ingredients"])
         # TODO add optional fields
         recipe = Recipe(title, form["url"], form["ingredient1"], form["ingredient2"], screenshot_url,

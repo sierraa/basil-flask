@@ -23,7 +23,6 @@ def create_app():
     @app.route("/recipe", methods=["POST", "GET"])
     def add_recipe():
         if request.method == "POST":
-            print(request.files)
             recipe_service.add_recipe(request.form, request.files['file'])
         # TODO probably want to get this from a better source of truth
         cuisines = ["Italian", "Japanese", "Mexican", "Thai", "None"]

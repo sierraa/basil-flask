@@ -14,9 +14,9 @@ class ScreenshotDao:
     def upload(self, image_file, title):
         try:
             key = f"{title}.png"
-            self.s3.upload_file(image_file, self.bucket_name, key)
+            self.s3.upload_fileobj(image_file, self.bucket_name, key)
             logging.debug(f"Upload of image file {image_file} successful.")
-
+            return self.get_url(title)
         except FileNotFoundError:
             logging.debug(f"Could not find file {image_file}.")
         except NoCredentialsError:
