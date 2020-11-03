@@ -32,7 +32,8 @@ def create_app():
 
     @app.route("/recipes")
     def recipes_list():
-        return render_template("recipes_list.html")
+        recipes = recipe_service.list_recipes()
+        return render_template("recipes_list.html", recipes=recipes)
 
     return app
 

@@ -1,7 +1,9 @@
 from dao.recipe import Recipe
 from dao.recipe_dao import RecipeDao
+from dao.recipe_preview import RecipePreview
 from dao.screenshot_dao import ScreenshotDao
 from werkzeug.utils import secure_filename
+
 
 class RecipeService:
 
@@ -23,3 +25,12 @@ class RecipeService:
     def get_ingredients_list_from_string(self, ingredients):
         ingredients_list = ingredients.split(",")
         return [x.strip() for x in ingredients_list]
+
+    def list_recipes(self):
+        recipes = self.recipe_dao.get_recipes()["Items"]
+        return [RecipePreview.create_preview(self.get_string_attribute("Ingredient1,Ingredient2", recipe),
+                                             self.get_string_attribute("Title", recipe),
+                                             self.get_string_attribute("Url", recipe)) for recipe in recipes]
+
+    def get_string_attribute(self, attribute_name, item):
+        return item[attribute_name]["S"]

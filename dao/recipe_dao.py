@@ -12,3 +12,10 @@ class RecipeDao:
         self.ddb.put_item(TableName=self.table_name,
                           Item=recipe.get_item())
         logging.debug(f"Sucessfully put recipe {recipe.title} in table {self.table_name}")
+
+    def get_recipes(self):
+        response = self.ddb.scan(TableName=self.table_name, Limit=100,
+                                 AttributesToGet=['Ingredient1,Ingredient2', 'Url', 'Title'],
+                                 Select='SPECIFIC_ATTRIBUTES')
+        logging.debug(f"Successfully retrieved from table {self.table_name}")
+        return response
