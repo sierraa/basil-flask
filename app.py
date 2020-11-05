@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import logging
 
+from controllers.table_controller import RecipeTable
 from main.recipe_service import RecipeService
 
 
@@ -25,16 +26,17 @@ def create_app():
         if request.method == "POST":
             recipe_service.add_recipe(request.form, request.files['file'])
         # TODO probably want to get this from a better source of truth
-        cuisines = ["Italian", "Japanese", "Mexican", "Thai", "None"]
+        cuisines = ["Italian", "Japanese", "Mexican", "Thai", "French", "None"]
         diets = ["Vegetarian", "Vegan", "Low carb", "Pescetarian"]
         tags = ["Healthy", "Quick", "Salad", "Soup"]
+        # TODO: probably want to add some ability to edit recipes 
         return render_template("new_recipe.html", cuisines=cuisines, diets=diets, tags=tags)
 
     @app.route("/recipes")
     def recipes_list():
         recipes = recipe_service.list_recipes()
-        return render_template("recipes_list.html", recipes=recipes)
-
+        recipe_table = RecipeTable(recipes)
+        return render_template("recipes_list.html", recipe_table=recipe_table)
     return app
 
 
