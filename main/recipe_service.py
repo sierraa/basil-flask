@@ -22,6 +22,11 @@ class RecipeService:
                         form.get("Vegetarian", default=False), form.get("Vegan", default=False), ingredients)
         self.recipe_dao.put(recipe)
 
+    def get_recipe(self, args):
+        title = args['title']
+        ingredient1, ingredient2 = args['ingredient1'], args['ingredient2']
+        recipe = self.recipe_dao.get_recipe(title, ingredient1, ingredient2)
+
     def get_ingredients_list_from_string(self, ingredients):
         ingredients_list = ingredients.split(",")
         return [x.strip() for x in ingredients_list]

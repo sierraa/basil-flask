@@ -19,3 +19,8 @@ class RecipeDao:
                                  Select='SPECIFIC_ATTRIBUTES')
         logging.debug(f"Successfully retrieved from table {self.table_name}")
         return response
+
+    def get_recipe(self, title, ingredient1, ingredient2):
+        item = self.ddb.get_item(TableName=self.table_name, Key={'Title':  {'S': title},
+                                                          'Ingredient1,Ingredient2': {'S': f'{ingredient1},{ingredient2}'}})
+        return item

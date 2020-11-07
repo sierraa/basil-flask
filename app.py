@@ -19,17 +19,23 @@ def create_app():
 
     @app.route("/")
     def home():
+        # TODO: add edit recipe, delete recipe
         return render_template("home.html")
 
-    @app.route("/recipe", methods=["POST", "GET"])
+    @app.route("/recipe", methods=["GET"])
+    def view_recipe():
+        if not request.args:
+            return render_template("404.html")
+        recipe = recipe_service.get_recipe(request.args)
+        return render_template("view_recipe.html")
+
+    @app.route("/recipe", methods=["POST"])
     def add_recipe():
-        if request.method == "POST":
-            recipe_service.add_recipe(request.form, request.files['file'])
+        recipe_service.add_recipe(request.form, request.files['file'])
         # TODO probably want to get this from a better source of truth
         cuisines = ["Italian", "Japanese", "Mexican", "Thai", "French", "None"]
         diets = ["Vegetarian", "Vegan", "Low carb", "Pescetarian"]
         tags = ["Healthy", "Quick", "Salad", "Soup"]
-        # TODO: probably want to add some ability to edit recipes 
         return render_template("new_recipe.html", cuisines=cuisines, diets=diets, tags=tags)
 
     @app.route("/recipes")
